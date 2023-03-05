@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>WhatsApp - Inicio</title>
+		<link rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Whatsapp_logo_svg.png/600px-Whatsapp_logo_svg.png" type="image/x-icon">
+		<style>
+			.join-container {
+				max-width: 500px;
+				margin: auto;
+				padding: 20px;
+				background-color: #f2f2f2;
+				border-radius: 5px;
+			}
+				
+			.join-header {
+				text-align: center;
+				margin-bottom: 20px;
+			}
+				
+			.join-header h1 {
+				font-size: 24px;
+				margin: 0;
+			}
+				
+			.form-control {
+				margin-bottom: 10px;
+			}
+				
+			.form-control label {
+				display: block;
+				margin-bottom: 5px;
+				font-weight: bold;
+			}
+				
+			.form-control input, .form-control select {
+				display: block;
+				width: 100%;
+				padding: 10px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				font-size: 16px;
+				margin-bottom: 10px;
+			}
+				
+			.form-control select {
+				appearance: none;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M7.406 9l4.594 4.594 4.594-4.594.031-.031.031.031h.969v.969l-4.594 4.594 4.594 4.594v.969h-.969l-.031-.031-.031.031-4.594-4.594-4.594 4.594-.031.031-.031-.031h-.969v-.969l4.594-4.594-4.594-4.594v-.969h.969l.031.031.031-.031 4.594 4.594z'/%3E%3C/svg%3E") no-repeat right center / 20px 20px;
+			}
+				
+			.form-control input[type="file"] {
+				border: none;
+				padding: 0;
+				margin-bottom: 0;
+			}
+				
+			.btn {
+				background-color: #4CAF50;
+				color: #fff;
+				padding: 10px 20px;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				font-size: 16px;
+			}
+				
+			.btn:hover {
+				background-color: #3e8e41;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="join-container">
+			<header class="join-header">
+				<h1><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Whatsapp_logo_svg.png/600px-Whatsapp_logo_svg.png" style="height: 50px; width: 50px;"/> Whatsapp Web</h1>
+			</header>
+			<main class="join-main">
+				<form action="chat.html" id="form">
+					<div class="form-control">
+						<label for="username">Nombre:</label>
+						<input type="text" name="username" id="username" placeholder="Introduce nombre..." required/>
+						<label for="state">Estado:</label>
+						<select id="state" required>
+							<option value="">-- Selecciona un estado --</option>
+							<option value="disponible">Disponible</option>
+							<option value="ocupado">Ocupado</option>
+							<option value="ausente">Ausente</option>
+						</select>
+						<label for="imagenPerfil">Avatar:</label>
+						<input type="file" id="userImage" accept=".jpg,.jpeg,.png">
+						<label for="imagenPerfil">Avatar predeterminado:</label>
+						<select id="avatar" required>
+							<option value="">-- Selecciona un avatar --</option>
+							<option><img src="/public/uploads/profileImg/perrete.jpg">Perro Drip</option>
+							<option><img src="/public/uploads/profileImg/gato.jpg">Gato locura</option>
+							<option><img src="/public/uploads/profileImg/pato.jpg">Pato Gigachad</option>
+						</select>
+					</div>
+					<div class="form-control">
+						<label for="room">Sala:</label>
+						<select name="room" id="room">
+							<option value="">-- Selecciona una sala --</option>
+							<option value="1">Sala 1</option>
+							<option value="2">Sala 2</option>
+							<option value="3">Sala 3</option>
+						</select>
+					</div>
+					<button id="joinRoom" type="submit" class="btn">Unirse a sala</button>
+				</form>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp - Chat</title>
+    <script src="https://kit.fontawesome.com/38dd90b0bd.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"/>
+    <link rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Whatsapp_logo_svg.png/200px-Whatsapp_logo_svg.png"  type="image/x-icon">
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        background: #ededed;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .btn {
+        cursor: pointer;
+        padding: 5px 15px;
+        background: #25d366;
+        color: #fff;
+        border: none;
+        font-size: 17px;
+        border-radius: 5px;
+      }
+
+      #backToPublic {
+        display: none;
+      }
+
+      #fileInput {
+        cursor: pointer;
+      }
+
+      .chat-container {
+        background: #fff;
+        margin: 30px auto;
+        overflow: hidden;
+        margin: 0;
+      }
+
+      .chat-header {
+        background: #075e54;
+        color: #fff;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .chat-main {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        height: 100vh;
+      }
+
+      .chat-sidebar {
+        background-color: #f0f0f0;
+        color: rgb(0, 0, 0);
+        padding: 20px 20px 60px;
+        overflow-y: scroll;
+      }
+
+      .chat-sidebar h2 {
+        font-size: 20px;
+        background: #ededed;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      .chat-sidebar h3 {
+        margin-bottom: 15px;
+      }
+
+      .chat-sidebar ul li {
+        padding: 10px 0;
+      }
+
+      .chat-messages {
+        padding: 30px;
+        max-height: calc(100vh - 175px);
+        overflow-y: scroll;
+        background-image: url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg');
+      }
+
+      .chat-messages .message {
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: #fff;
+        border-radius: 10px;
+        overflow-wrap: break-word;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .chat-messages .message .meta,
+      #typing {
+        font-size: 15px;
+        font-weight: bold;
+        color: #777;
+        opacity: 0.7;
+        margin-bottom: 7px;
+      }
+
+      .chat-messages .message .meta span {
+        color: #777;
+      }
+
+      .chat-form-container {
+        padding: 20px 30px;
+        background-color: #f0f0f0;
+      }
+
+      .chat-form-container form {
+        display: flex;
+      }
+
+      .chat-form-container input[type='text'] {
+        font-size: 16px;
+        padding: 5px;
+        height: 40px;
+        flex: 1;
+        border: none;
+        border-radius: 20px;
+        background-color: #fff;
+        padding-left: 20px;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .chat-form-container input[type='text']::placeholder {
+        color: #aaa;
+      }
+
+      .chat-form-container button {
+        font-size: 17px;
+        padding: 5px 20px;
+        background: #075e54;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        margin-left: 10px;
+        cursor: pointer;
+      }
+
+      .chat-form-container button:hover {
+        background: #128c7e;
+      }
+
+      @media (max-width: 768px) {
+        .chat-main {
+          display: block;
+          height: auto;
+        }
+
+        .chat-sidebar {
+          height: auto;
+          overflow: visible;
+          padding-bottom: 30px;
+        }
+
+        .chat-messages {
+          max-height: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <header class="chat-header">
+        <h1><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Whatsapp_logo_svg.png/50px-Whatsapp_logo_svg.png"/>Whastapp Web</h1>
+        <p id="typing"></p>
+        <a id="leave-btn" class="btn">Abandonar sala</a>
+      </header>
+      <main class="chat-main">
+        <div class="chat-sidebar">
+          <h3>Sala:</h3>
+          <h2 id="room-name"></h2>
+          <h3>En línea</h3>
+          <ul id="users"></ul>
+        </div>
+        <div class="chat-messages"></div>
+      </main>
+      <div class="chat-form-container">
+        <button id="backToPublic" onclick="backToRoom()" class="btn">Volver al chat público</button>
+        <form id="chat-form">
+          <button><i class="fa-regular fa-face-smile"></i></button>
+          <input id="msg" type="text" placeholder="Mensaje" autocomplete="off"/>
+          <button><input type="file" id="fileInput"><i class="fa-solid fa-paperclip"></i></input></button>
+          <button><i class="fa-solid fa-microphone"></i></button>
+          <button class="btn"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
