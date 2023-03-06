@@ -31,44 +31,10 @@ io.on('connection', socket => {
     });
   });
 
-  socket.on('privateChat', userId => {
-    const selectedUser = userId
-    if (selectedUser) {
-      const user = getCurrentUser(socket.id);
-      const roomId = `private_chat_${selectedUser.id}`;
-      socket.leave(user.room);
-      socket.join(roomId);
-      io.to(roomId).emit(
-        'message',
-        formatoMsg(autoMsg, `${user.username} se unió al chat privado`)
-      );
-  
-      io.to(roomId).emit('roomUsers', {
-        room: roomId,
-        users: getRoomUsers(roomId)
-      });
-  
-      io.to(roomId).emit('showButton', true);
-    }
-  });   
-
-  socket.on('backToPublic', () => {
-    const user = getCurrentUser(socket.id);
-    socket.leave(user.room);
-    socket.join(user.room);
-    user.room = "public_chat";
-    io.to(user.room).emit('showButton', false);
-  });
-
   socket.on('chatMessage', msg => {
     const user = getCurrentUser(socket.id);
     if (user) {
-      if (user.room.includes("private_chat")) {
         io.to(user.room).emit('message', formatoMsg(user.username, msg));
-      }
-      else {
-        io.to(user.room).emit('message', formatoMsg(user.username, msg));
-      }
     }
   });
 
@@ -102,9 +68,6 @@ io.on('connection', socket => {
           }
           else if (fileData.type.includes("video")) {
             io.to(user.room).emit('imagen', formatoMsg(user.username, `<video src="${filePath}" width="200" height="200" controls></video>`));
-          }
-          if (user.room.includes("private_chat")) {
-            io.to(user.room).emit('message', formatoMsg(user.username, fileData.name));
           }
           else {
             io.to(user.room).emit('message', formatoMsg(user.username, fileData.name));

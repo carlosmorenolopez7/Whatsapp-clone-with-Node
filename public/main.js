@@ -165,14 +165,6 @@ function outputUsers(users, image) {
   });
 }
 
-document.getElementById('users').addEventListener('click', (e) => {
-  const userId = e.target.id;
-  if (userId) {
-    socket.emit('privateChat', userId);
-  }
-});
-
-
 document.getElementById('leave-btn').addEventListener('click', () => {
   const leaveRoom = confirm('¿Abandonar chat?');
   if (leaveRoom) {
